@@ -40,7 +40,7 @@ export function usePublicaciones(filtros: FiltrosGrilla) {
     queryKey: ["publicaciones", filtros],
     queryFn: async () => {
       let q = supabase
-        .from("publicaciones_searchable")
+        .from("publicaciones_publicas")
         .select(COLUMNAS_PUBLICAS)
         .eq("estado", "publicada")
         .order("created_at", { ascending: false });

@@ -13,6 +13,6 @@ if (!url || !anonKey) {
 export const supabase = createClient<Database>(url, anonKey);
 
 export type PublicacionRow = Database["public"]["Tables"]["publicaciones"]["Row"];
-export type PublicacionSearchableRow =
-  Database["public"]["Views"]["publicaciones_searchable"]["Row"];
+export type PublicacionPublicaRow =
+  Database["public"]["Views"]["publicaciones_publicas"]["Row"];
 export type NuevaConsulta = Database["public"]["Tables"]["consultas"]["Insert"];

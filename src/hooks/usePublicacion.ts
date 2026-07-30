@@ -41,7 +41,7 @@ export function usePublicacion(id: string | undefined) {
     enabled: !!id,
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("publicaciones")
+        .from("publicaciones_publicas")
         .select(COLUMNAS_DETALLE)
         .eq("id", id!)
         .eq("estado", "publicada")

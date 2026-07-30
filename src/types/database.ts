@@ -137,6 +137,30 @@ export type Database = {
       };
     };
     Views: {
+      // Vista pública de la web: security_invoker + sin PII.
+      // Ver db/04_public_view.sql para el porqué de que existan dos vistas.
+      publicaciones_publicas: {
+        Row: {
+          condicion_comercial: string | null;
+          created_at: string | null;
+          descripcion: string | null;
+          descripcion_comercial: string | null;
+          disponibilidad: string | null;
+          empresa: string | null;
+          estado: string | null;
+          id: string | null;
+          imagen_url: string | null;
+          rubro: string | null;
+          search_text: string | null;
+          subrubro: string | null;
+          tipo_publicacion: string | null;
+          urgencia: string | null;
+          vencimiento: string | null;
+          zona: string | null;
+        };
+      };
+      // Vista del bot de n8n (service_role): incluye telefono y texto_whatsapp.
+      // La web NO debe usarla.
       publicaciones_searchable: {
         Row: {
           autor_id: string | null;

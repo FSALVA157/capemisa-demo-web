@@ -22,3 +22,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*.tmp
+Thumbs.db
+
+# --- Reglas heredadas del proyecto padre (fusionadas 2026-07-29) ---
+# `.env.local` ya lo cubre `*.local` de arriba; se explicita por claridad.
+.env.local
+.env.*.local
+
+# Spec Kit: estado mutable de sesión, no artefacto.
+# Apunta a la feature "actual" y cambia en cada /speckit-specify.
+# Los specs, la constitución, los templates y los scripts SÍ se versionan.
+.specify/feature.json
+
+# Claude Code: permisos por máquina, puede contener rutas locales.
+.claude/settings.local.json
+
+# Salidas de herramientas
+.playwright-mcp/

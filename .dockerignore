@@ -8,3 +8,15 @@ npm-debug.log*
 .vscode
 .idea
 .DS_Store
+
+# --- Artefactos SDD: se versionan, pero NO se compilan (2026-07-29) ---
+# El Dockerfile hace `COPY . .`, así que sin estas reglas cada edición de una
+# spec invalida la capa de Docker y dispara un rebuild completo del bundle.
+# Ojo: este archivo y .gitignore tienen criterios OPUESTOS. .gitignore decide
+# qué se conserva; .dockerignore decide qué se compila. specs/ va versionado
+# pero no compilado.
+specs/
+.specify/
+.claude/
+db/
+.playwright-mcp/

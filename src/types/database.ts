@@ -137,6 +137,35 @@ export type Database = {
       };
     };
     Views: {
+      // Vista del área de miembro: security_invoker + filtra por autor.
+      // Devuelve las publicaciones PROPIAS en cualquier estado, con el conteo de
+      // solicitudes recibidas. Incluye telefono/email/responsable porque son
+      // datos propios del miembro, no de terceros.
+      // Ver db/05_auth_miembros.sql.
+      mis_publicaciones: {
+        Row: {
+          cantidad_consultas: number | null;
+          condicion_comercial: string | null;
+          created_at: string | null;
+          descripcion: string | null;
+          descripcion_comercial: string | null;
+          disponibilidad: string | null;
+          email: string | null;
+          empresa: string | null;
+          estado: string | null;
+          id: string | null;
+          imagen_url: string | null;
+          responsable: string | null;
+          rubro: string | null;
+          subrubro: string | null;
+          telefono: string | null;
+          tipo_publicacion: string | null;
+          updated_at: string | null;
+          urgencia: string | null;
+          vencimiento: string | null;
+          zona: string | null;
+        };
+      };
       // Vista pública de la web: security_invoker + sin PII.
       // Ver db/04_public_view.sql para el porqué de que existan dos vistas.
       publicaciones_publicas: {
@@ -192,6 +221,9 @@ export type Database = {
     };
     Functions: {
       is_admin: { Args: Record<string, never>; Returns: boolean };
+      // SECURITY DEFINER. La usa la política consultas_select_autor; la web no
+      // la invoca directamente. Ver db/05_auth_miembros.sql.
+      es_autor_de: { Args: { pub_id: string }; Returns: boolean };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

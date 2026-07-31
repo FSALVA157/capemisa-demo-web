@@ -4,23 +4,32 @@
 -- ============================================================
 
 -- ---------- auth.users ----------
+-- ⚠️ Las 8 columnas de token van en cadena vacía, NO en NULL, y por eso se listan
+-- explícitamente. GoTrue las lee como `string` de Go: si quedan en NULL, el login
+-- devuelve 500 con "Scan error on column index 3, name confirmation_token:
+-- converting NULL to string is unsupported" — y falla para TODAS las cuentas de la
+-- base, no solo para la recién insertada. Diagnosticado el 2026-07-31 (T008).
 INSERT INTO auth.users (
   instance_id, id, aud, role, email, encrypted_password,
   email_confirmed_at, created_at, updated_at,
-  raw_app_meta_data, raw_user_meta_data, is_super_admin
+  raw_app_meta_data, raw_user_meta_data, is_super_admin,
+  confirmation_token, recovery_token, email_change, email_change_token_new,
+  email_change_token_current, phone_change, phone_change_token, reauthentication_token
 ) VALUES
 ('00000000-0000-0000-0000-000000000000',
  '11111111-1111-1111-1111-111111111111',
  'authenticated', 'authenticated',
  'miembro@capemisa.com', crypt('demo1234', gen_salt('bf')),
  now(), now(), now(),
- '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb, false),
+ '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb, false,
+ '', '', '', '', '', '', '', ''),
 ('00000000-0000-0000-0000-000000000000',
  '22222222-2222-2222-2222-222222222222',
  'authenticated', 'authenticated',
  'admin@capemisa.com', crypt('demo1234', gen_salt('bf')),
  now(), now(), now(),
- '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb, false);
+ '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb, false,
+ '', '', '', '', '', '', '', '');
 
 -- ---------- auth.identities (necesario para login email) ----------
 INSERT INTO auth.identities (

@@ -15,4 +15,8 @@ export const supabase = createClient<Database>(url, anonKey);
 export type PublicacionRow = Database["public"]["Tables"]["publicaciones"]["Row"];
 export type PublicacionPublicaRow =
   Database["public"]["Views"]["publicaciones_publicas"]["Row"];
+export type MiPublicacionRow =
+  Database["public"]["Views"]["mis_publicaciones"]["Row"];
 export type NuevaConsulta = Database["public"]["Tables"]["consultas"]["Insert"];
+export type PerfilRow = Database["public"]["Tables"]["perfiles"]["Row"];
+export type NuevaPublicacion = Database["public"]["Tables"]["publicaciones"]["Insert"];

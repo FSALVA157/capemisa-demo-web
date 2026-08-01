@@ -130,9 +130,9 @@ Las tareas marcadas **🔒 EJECUCIÓN HUMANA** modifican la base de datos. Por l
 - [X] T041 [P] Correr los **escenarios edge** de `quickstart.md`: dos pestañas con cierre de sesión en una, cuenta de administración entrando al área, publicación rechazada visible en el listado, solicitud sin email/motivo/urgencia.
 - [X] T042 Correr las **3 verificaciones de compliance** de `quickstart.md`. La del Principio IV son las 7 verificaciones de base de T008 más la confirmación de que el `service_role` no aparece en el bundle publicado. Documentar resultados.
 - [X] T043 Verificar que el **flujo de automatización de n8n sigue funcionando** después de los cambios de base. Consulta con `service_role`, así que no debería verse afectado — **confirmarlo, no asumirlo**: asumir es lo que originó el problema de la feature 001.
-- [ ] T044 Deploy vía push a `main` y verificación en producción de que el catálogo público y el área de miembro funcionan. Recordar que `main` es producción (constitución).
+- [X] T044 Deploy vía push a `main` y verificación en producción de que el catálogo público y el área de miembro funcionan. Recordar que `main` es producción (constitución).
 - [X] T045 Actualizar `CLAUDE.md` con lo que cambió: rutas nuevas, `AuthProvider`, la vista `mis_publicaciones`, y **el nuevo modelo de lectura** (ninguna lectura directa a la tabla base). La sección sobre las dos vistas queda desactualizada al aplicar T006.
-- [ ] T046 Cerrar la feature: marcar el checklist de `checklists/requirements.md` y anotar el registro de validación completo en `quickstart.md`.
+- [X] T046 Cerrar la feature: marcar el checklist de `checklists/requirements.md` y anotar el registro de validación completo en `quickstart.md`.
 
 ---
 

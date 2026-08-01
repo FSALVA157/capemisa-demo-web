@@ -353,3 +353,24 @@ Verificado contra la base: **las 13 columnas** que usan `Prepare prompt` y `Shap
 | Deploy y verificación en producción | `main` es producción | T044 |
 
 **Riesgo aceptado que sigue abierto**: las dos vías de lectura de PII con la anon key (FR-026b). Verificadas como **presentes**, no como correctas. Cerrar antes de pasar de demo a producción.
+
+---
+
+## T044 — Deploy y verificación en producción (2026-07-31)
+
+Merge a `main` hecho por Fernando. **El auto-deploy no se disparó solo**: tras más de 20 minutos sin cambios en línea, hizo un redeploy manual desde Coolify y ahí sí salió. Revisar el webhook de GitHub → Coolify antes del próximo push; el build en sí no tuvo problemas.
+
+Verificado contra `https://capemisa-app.fsalva157.dev`:
+
+| Qué | Resultado |
+|---|---|
+| Bundle desplegado | `index-JGkLV903.js`, 841.746 bytes — **idéntico al build local**, mismo hash |
+| Catálogo público | 20 tarjetas, sin cambios (FR-024) |
+| Login | Entra con `miembro@capemisa.com` y lista sus 19 publicaciones, con la empresa en la barra |
+| Detalle propio | Sus 3 interesados; sin acción de editar por estar publicada |
+| Recarga de `/mi-area` | Sigue en el área, sin pasar por la pantalla de acceso (R-03 también en producción) |
+| Fallback SPA de nginx | `/ingresar`, `/mi-area`, `/mi-area/nueva` responden 200 |
+| Errores de JavaScript | Ninguno |
+| Secretos en el bundle | Sin `service_role`; solo la URL del proyecto y la anon key |
+
+Las variables `VITE_*` quedaron correctamente inlineadas, o sea que están marcadas como **Build Variable** en Coolify, no solo runtime.

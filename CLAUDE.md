@@ -8,6 +8,8 @@ Frontend del catálogo público de **CAPEMISA Conecta**: una demo institucional 
 
 El repo git es este directorio (`web/`), aunque también contiene `db/` (SQL, fuente de verdad del schema) y `specs/`. El directorio padre (`capemisa-app-demo/`) tiene el brief del cliente y scripts sueltos de n8n, y **no** está bajo control de versiones.
 
+**Antes de escribir una spec nueva, leer [`docs/plan-producto.md`](docs/plan-producto.md)**: es el contexto de producto destilado del brief original — el circuito completo de la demo, qué etapas ya están y cuáles faltan, y las simplificaciones de alcance que están acordadas (y que una spec no debería revertir sin decirlo). Este archivo cubre el *cómo* técnico; ese cubre el *qué* y el *por qué*.
+
 ## Comandos
 
 ```bash
@@ -44,6 +46,20 @@ página (src/pages) → hook de src/hooks → cliente supabase (src/lib/supabase
 - **Hooks** (uno por operación, sin abstracción compartida): `usePublicaciones` (grilla, filtro por tipo + keyword), `usePublicacion` (detalle por id), `useEnviarConsulta` (mutación de inserción), y los del área de miembro: `useMisPublicaciones`, `useMiPublicacion`, `useInteresados`, `useCrearPublicacion`, `useEditarPublicacion`.
 - **Alias**: `@/*` → `src/*`, configurado en `vite.config.ts` y `tsconfig.app.json`. Usarlo en imports nuevos.
 - **shadcn/ui**: componentes generados viven en `src/components/ui/` — no editarlos a mano salvo necesidad; `components.json` los configura (estilo default, base slate, CSS variables, iconos lucide).
+
+### Chat web (feature 003)
+
+`ChatWidget` se monta en el catálogo y en el detalle de publicación. Busca por significado y registra solicitudes de contacto, hablando con el workflow n8n **`capemisa_conversacional_web`** (`x77glo4LOG1Hy1Pn`) vía `VITE_N8N_CHAT_URL`. Si esa variable falta, el chat **no se monta** y el resto de la web funciona igual — a diferencia de `src/lib/supabase.ts`, acá no se lanza.
+
+El chat tiene las capacidades de la rama *invitado* del bot: buscar y registrar consultas. **No publica ni edita**, para eso está `/mi-area`. El login no desbloquea nada: solo precarga los datos de contacto del perfil para ahorrar turnos.
+
+Tres cosas que no se pueden tocar sin romper algo:
+
+- **`Tool buscar` pasa `rol: "invitado"` como literal fijo.** `Shape resultados` de `capemisa_tool_buscar` hace `if (rol !== 'invitado') r.telefono = p.telefono`. Si eso se convierte en expresión o se toma del body, el chat empieza a devolver el teléfono de todas las empresas oferentes **y todo sigue pareciendo funcionar**. `ResultadoChat` en `src/lib/chatApi.ts` no declara `telefono` justamente para que la interfaz no pueda mostrarlo por accidente.
+- **La `sessionKey` de la memoria es `web:{conversacion_id}`, y el prefijo lo antepone n8n**, nunca el cliente. Si el cliente pudiera mandar la clave completa, apuntaría a `miembro:+549...` y leería una conversación de WhatsApp ajena.
+- **El guardrail se evalúa por oración**, descartando interrogativas y subjuntivos. Sin eso, `registr[eé]` matchea igual "registré" (afirmación) que "registre" (ofrecimiento), porque el modelo omite tildes: medido, bloqueaba 4 de cada 10 turnos legítimos.
+
+**Los workflows n8n existentes no se tocan bajo ninguna condición**: están en uso para demos ante el cliente. Si hiciera falta un cambio en uno reutilizado, se crea un **gemelo** (copia con ID propio) y se consume ese. Al crear workflows por la API hay un detalle: **n8n no genera el `webhookId`** —lo hace la UI—, y sin él la ruta de producción no se registra y responde "webhook is not registered" aunque el workflow figure activo.
 
 ### Autenticación y área de miembro
 

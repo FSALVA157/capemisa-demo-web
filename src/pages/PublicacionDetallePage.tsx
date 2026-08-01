@@ -5,6 +5,7 @@ import { usePublicacion } from "@/hooks/usePublicacion";
 import { ImagenPublicacion } from "@/components/ImagenPublicacion";
 import { EstadoVacio } from "@/components/EstadoVacio";
 import { DialogSolicitarContacto } from "@/components/DialogSolicitarContacto";
+import { ChatWidget } from "@/components/ChatWidget";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -139,6 +140,8 @@ export default function PublicacionDetallePage() {
         open={dialogAbierto}
         onOpenChange={setDialogAbierto}
       />
+
+      <ChatWidget />
     </div>
   );
 }

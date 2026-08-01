@@ -5,6 +5,7 @@ import { usePublicaciones } from "@/hooks/usePublicaciones";
 import { PublicacionCard } from "@/components/PublicacionCard";
 import { FiltrosGrilla } from "@/components/FiltrosGrilla";
 import { EstadoVacio } from "@/components/EstadoVacio";
+import { ChatWidget } from "@/components/ChatWidget";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -88,6 +89,8 @@ export default function CatalogoPage() {
           ))}
         </div>
       )}
+
+      <ChatWidget />
     </div>
   );
 }

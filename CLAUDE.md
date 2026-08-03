@@ -59,6 +59,8 @@ Tres cosas que no se pueden tocar sin romper algo:
 - **La `sessionKey` de la memoria es `web:{conversacion_id}`, y el prefijo lo antepone n8n**, nunca el cliente. Si el cliente pudiera mandar la clave completa, apuntaría a `miembro:+549...` y leería una conversación de WhatsApp ajena.
 - **El guardrail se evalúa por oración**, descartando interrogativas y subjuntivos. Sin eso, `registr[eé]` matchea igual "registré" (afirmación) que "registre" (ofrecimiento), porque el modelo omite tildes: medido, bloqueaba 4 de cada 10 turnos legítimos.
 
+Y un riesgo aceptado con criterio de demo (R-12 de `specs/003-chat-web-catalogo/research.md`): **`ChatWidget` no tiene error boundary propio**. FR-025 —que una falla del chat no tumbe el catálogo— se cumple hoy porque `chatApi.ts` nunca lanza, no porque haya una barrera. Si un cambio rompe esa invariante, envolver el widget en su propio `ErrorBoundary` en el mismo cambio: si no, la excepción sube al `errorElement` del router y se cae la ruta entera.
+
 **Los workflows n8n existentes no se tocan bajo ninguna condición**: están en uso para demos ante el cliente. Si hiciera falta un cambio en uno reutilizado, se crea un **gemelo** (copia con ID propio) y se consume ese. Al crear workflows por la API hay un detalle: **n8n no genera el `webhookId`** —lo hace la UI—, y sin él la ruta de producción no se registra y responde "webhook is not registered" aunque el workflow figure activo.
 
 ### Autenticación y área de miembro

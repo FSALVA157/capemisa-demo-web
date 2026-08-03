@@ -428,8 +428,13 @@ continúa sin error visible". Con esta corrección, la conversación **se reinic
 eligió así porque dejar visible la conversación de la persona anterior tras un cierre de
 sesión es peor que perderla. En la práctica el caso es raro —Supabase renueva el token
 solo mientras la pestaña está abierta, así que llegar a `null` implica que la renovación
-falló—, pero **es una desviación consciente del criterio de aceptación** y queda acá para
-que se confirme o se revierta.
+falló—, pero **es una desviación consciente del criterio de aceptación**.
+
+**Confirmada por Fernando el 2026-08-03**: se adopta el reinicio como comportamiento
+correcto, no como concesión. AC-3.4 en `spec.md` quedó reescrito para decir lo que el
+código hace. Si en algún momento se quiere volver a "continúa", hay que resolver antes
+cómo se purga la memoria del lado de n8n sin tirar la conversación, que es el problema que
+el reinicio esquiva.
 
 ### Nota sobre el doble envío
 
@@ -461,6 +466,23 @@ Supabase la app no tiene nada que mostrar, sin chat tiene todo menos el chat.
 45 segundos es holgado a propósito: un turno con búsqueda encadena una llamada a Sonnet
 4.5, una a Haiku 4.5 y una segunda a Sonnet para redactar la respuesta. El objetivo de
 SC-004 (15 s en el 90%) es la expectativa; el timeout es la red de contención.
+
+### Riesgo aceptado — `ChatWidget` sin error boundary propio
+
+**Aceptado por Fernando el 2026-08-03, con criterio de demo.**
+
+FR-025 dice que una falla del chat no debe afectar al catálogo. Hoy eso se cumple **por
+convención, no por estructura**: `chatApi.ts` no lanza nunca —traduce todo fallo de red,
+4xx, 5xx y timeout a un mensaje del asistente— y por eso no hay camino conocido en el que
+el widget tire una excepción de render. Pero si alguna vez la tirara, no hay boundary que
+la contenga: la atraparía el `errorElement` de React Router y se caería la ruta entera,
+catálogo incluido, que es exactamente lo que FR-025 quiere evitar.
+
+Se decide **no** agregar el boundary durante la demo. Lo que lo convierte en riesgo real es
+cualquier cambio que rompa la invariante de `chatApi.ts`: si alguien hace que el módulo
+lance, o mete lógica que pueda romper en render dentro de `ChatWidget` /
+`ChatResultado`, hay que envolver el widget en su propio `ErrorBoundary` **en el mismo
+cambio**. Es la condición que cierra este riesgo, no una tarea de mantenimiento suelta.
 
 ---
 

@@ -201,8 +201,10 @@ del perfil.
 
 Con el chat abierto y conversando, cerrar sesión desde otra pestaña. Seguir escribiendo.
 
-**Pasa si**: la conversación continúa sin error visible, y al pedir contacto el asistente
-vuelve a preguntar los datos.
+**Pasa si**: la conversación **se reinicia** sin error visible, y al pedir contacto el
+asistente vuelve a preguntar los datos — sin proponer los de la identidad anterior, que es
+lo que este criterio protege. (Criterio revisado el 2026-08-03; ver la desviación
+confirmada de AC-3.4 en `research.md`.)
 
 ### V-3.4 — Mismos resultados con y sin sesión (AC-3.5)
 
@@ -370,6 +372,51 @@ consultando el `estado` de los ids devueltos).
 **La lección se repite: hay que verificar contra la base o contra la estructura, no contra
 el texto.**
 
+### T044 equivalente — verificación en producción (2026-08-01)
+
+Deploy hecho por Fernando. Verificado contra `https://capemisa-app.fsalva157.dev`:
+
+| Qué | Resultado |
+|---|---|
+| Bundle desplegado | `index-exoESgAO.js`, 849.170 bytes |
+| `VITE_N8N_CHAT_URL` inlineada | **sí** — la URL del webhook aparece en el bundle, o sea que quedó marcada como Build Variable |
+| `service_role` en el bundle | ausente |
+| Fallback SPA de nginx | `/`, `/ingresar` y `/publicacion/:id` responden 200 |
+| Chat montado | burbuja presente y panel operativo |
+| Búsqueda semántica | "necesito luz en un campamento sin red electrica" → 3 tarjetas de grupos electrógenos |
+| Datos de contacto en la respuesta | **ninguno** |
+| Errores de JavaScript | solo un 400 de `/auth/v1/token` por un refresh token vencido en el navegador, ajeno al chat |
+
+**Merge**: PR #4 (`d2cf66c`) en `main`. El auto-deploy sí funcionó esta vez.
+
+### T036 — SC-010 medido en producción (2026-08-03)
+
+Se desactivó `capemisa_conversacional_web` por la API de n8n durante **~2 minutos** y se
+midió la web contra `https://capemisa-app.fsalva157.dev`. Con el workflow caído:
+
+| Qué | Resultado |
+|---|---|
+| Webhook `POST /webhook/chat-web` | HTTP **404**, "The requested webhook is not registered" — el chat estaba realmente caído |
+| Catálogo `/` | **20 tarjetas**, el mismo número que la verificación local |
+| Buscador | "grupo electrogeno" → **20 → 3 tarjetas**; la URL pasó a `?q=grupo+electrogeno` |
+| Detalle `/publicacion/…bb01` | carga completo: rubro, zona, disponibilidad, descripción |
+| `/mi-area` sin sesión | redirige a `/ingresar`, sin romper |
+| **Chat degradado** | "Perdón, no pude responderte en este momento. ¿Probamos de nuevo?" + botón **Reintentar** |
+| Catálogo **después** del fallo del chat | **20 tarjetas** y navbar intactos — el widget falló sin llevarse la página |
+| Consola | 2 errores, **los dos del propio fetch al webhook** (CORS del preflight y `ERR_FAILED`). Ninguno ajeno al chat |
+
+Los dos errores de consola merecen una nota: con el workflow desactivado n8n responde 404
+**sin cabeceras CORS**, así que el navegador lo reporta como bloqueo de CORS y no como
+404. Da igual para el resultado —`chatApi.ts` trata todo fallo del mismo modo— pero
+explica por qué el mensaje de consola no dice "404".
+
+**Restauración verificada, que es la parte que no se puede dar por hecha**: tras
+reactivar, el webhook volvió a responder **HTTP 200**, y en el navegador
+"necesito luz en un campamento sin red electrica" devolvió **3 tarjetas de grupos
+electrógenos sin datos de contacto**. El `versionId` quedó en `1daded92-6c84-4ac9-9341-caaaee9930d2`
+**antes y después** del toggle: activar y desactivar por API **no reescribe el workflow**,
+que es lo que mantiene válida la verificación de intactitud I-1.
+
 ### Verificaciones ya corridas
 
 | # | Qué | Resultado |
@@ -410,11 +457,12 @@ el texto.**
 | # | Qué | Por qué |
 |---|---|---|
 | E-3 | Timeout de 45 s | Requiere provocar una demora larga del lado de n8n |
-| V-3.3 | Sesión vencida a mitad de conversación | El comportamiento **cambió** con la corrección de `useChat`: ahora reinicia en vez de continuar. Ver la desviación de AC-3.4 en `research.md` — hay que confirmarla o revertirla |
-| **I-2** 🔒 | Conversación real por WhatsApp de punta a punta | Dispara mensajes reales: la corre Fernando |
-| **I-3** 🔒 | Sin mezcla de memoria entre canales | Ídem |
-| T035 🔒 | Deploy y Build Variable en Coolify | Pipeline de deploy |
-| T036 | SC-010 **en producción** | Ya verificado en local; falta repetirlo después del deploy |
+| V-3.3 | Sesión vencida a mitad de conversación | Falta correrla contra el criterio **revisado** (reinicia, no continúa). La desviación de AC-3.4 quedó confirmada el 2026-08-03, así que ya no hay decisión pendiente: solo la verificación |
+
+Hechas desde que se escribió esta tabla: **I-2** e **I-3** las verificó Fernando por
+WhatsApp el 2026-08-03 (la evidencia es suya, no se midió desde la sesión); **T035**
+—deploy y Build Variable— quedó registrado más arriba; **T036** se midió el 2026-08-03 y
+tiene su propia sección.
 
 **Nota sobre el límite de uso**: E-8 se verificó bajando el tope a 2 temporalmente, porque
 comprobar el tope real habría costado 30 llamadas al modelo. Se restauró a 30 y se reseteó

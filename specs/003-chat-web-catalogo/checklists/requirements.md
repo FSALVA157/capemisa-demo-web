@@ -55,3 +55,20 @@ antes de redactar, y quedaron registradas en Assumptions.
 **Nota 4 — valores ajustables.** El tope de 30 mensajes por hora por origen (FR-024) y el
 umbral de 15 segundos de respuesta (SC-004) son valores de demo elegidos por defecto, no
 requisitos derivados de una medición. Ajustarlos no requiere reabrir la spec.
+
+**Nota 5 — AC-3.4 se revisó después de validar este checklist.** El escenario 4 de US3
+decía que al vencer la sesión "la conversación continúa sin error visible"; al implementar
+se encontró que continuar dejaba expuestos los datos de contacto de la identidad anterior,
+y el comportamiento pasó a ser **reiniciar**. Fernando confirmó la desviación el
+2026-08-03 y `spec.md` quedó reescrito para decir lo que el código hace. El checklist
+sigue válido: el criterio no dejó de ser testable, cambió lo que afirma. Detalle en R-11
+de `research.md`.
+
+---
+
+## Cierre
+
+Feature cerrada el **2026-08-03**, 40/40 tareas. Queda **sin verificar E-3** (el timeout
+de 45 s, que necesita provocar una demora larga del lado de n8n) y **V-3.3 pendiente de
+correr contra el criterio revisado** de AC-3.4. Ninguna de las dos bloquea la demo; están
+anotadas en `quickstart.md` para que no se pierdan.

@@ -64,7 +64,7 @@ Un miembro con sesión abierta usa el chat igual que cualquier visitante, pero c
 1. **Given** un usuario con sesión activa, **When** pide contactar a un oferente, **Then** el asistente le propone los datos de contacto de su perfil y le pide confirmación en lugar de preguntarlos de a uno.
 2. **Given** un usuario con sesión activa, **When** confirma los datos propuestos, **Then** la solicitud se registra con los datos de su perfil.
 3. **Given** un usuario con sesión activa, **When** prefiere usar otros datos de contacto, **Then** puede indicarlos y el asistente los usa en lugar de los del perfil.
-4. **Given** un usuario cuya sesión venció mientras el chat estaba abierto, **When** sigue conversando, **Then** la conversación continúa sin error visible y el asistente vuelve a pedir los datos de contacto.
+4. **Given** un usuario cuya sesión venció mientras el chat estaba abierto, **When** sigue conversando, **Then** la conversación **se reinicia** sin error visible y el asistente vuelve a pedir los datos de contacto. *(Revisado el 2026-08-03: el criterio original decía "continúa"; ver la desviación confirmada en `research.md` — dejar visible la conversación de la identidad anterior es peor que perderla.)*
 5. **Given** un usuario con sesión activa, **When** usa el chat para buscar, **Then** obtiene exactamente los mismos resultados y la misma información que un visitante anónimo, sin datos de contacto de los oferentes.
 
 ---

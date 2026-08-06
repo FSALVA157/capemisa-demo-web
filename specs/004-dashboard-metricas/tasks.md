@@ -76,5 +76,8 @@ Leyenda: `[x]` hecha · `[ ]` pendiente · `[~]` parcial
   en vez de truncarse, y el eje de categorías del embudo achica su ancho por
   debajo de 640 px (`useEsAngosto`). (SC-004, AC-1.5)
 - [x] **T026** Actualizar la tabla de estado de `docs/plan-producto.md`.
-- [ ] **T027** Push a `main` → auto-deploy Coolify → validar en
-  `capemisa-app.fsalva157.dev/dashboard`.
+- [x] **T027** Push a `main` → Coolify → validado en
+  `capemisa-app.fsalva157.dev/dashboard` el 2026-08-06: bundle nuevo, chunk
+  diferido servido, 26 / 20 / 13 / 88 % y embudo 20-4-1-1, sin errores de consola.
+  El primer deploy falló (build de Coolify, exit 255) y salió en el reintento; el
+  Dockerfile no se tocó — se reprodujo el build local completo y pasa.

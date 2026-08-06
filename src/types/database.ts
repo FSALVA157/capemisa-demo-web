@@ -224,6 +224,12 @@ export type Database = {
       // SECURITY DEFINER. La usa la política consultas_select_autor; la web no
       // la invoca directamente. Ver db/05_auth_miembros.sql.
       es_autor_de: { Args: { pub_id: string }; Returns: boolean };
+      // SECURITY DEFINER. Devuelve solo agregados (conteos), nunca filas ni
+      // PII: la anon key no ve consultas ni publicaciones sin publicar, así que
+      // el dashboard no puede calcularlos del lado del cliente.
+      // La forma del jsonb está tipada en src/hooks/useMetricas.ts.
+      // Ver db/07_metricas_dashboard.sql.
+      metricas_dashboard: { Args: Record<string, never>; Returns: Json };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

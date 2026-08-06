@@ -77,3 +77,50 @@ export function normalizarBusqueda(s: string): string {
     .replace(/\p{Diacritic}/gu, "")
     .trim();
 }
+
+// Paleta para los gráficos del dashboard (feature 004).
+//
+// Recharts recibe colores como string, no como clase de Tailwind, así que no
+// se pueden reusar las constantes *_COLOR de arriba. Estos valores son los
+// mismos tonos de la escala Tailwind que usan esos badges, un escalón o dos
+// más saturados para que se lean como área rellena y no como fondo de pastilla.
+// Si cambia un badge, cambiar también su par acá.
+export const ESTADO_PUBLICACION_GRAFICO: Record<string, string> = {
+  pendiente: "#f59e0b", // amber-500
+  faltan_datos: "#fb923c", // orange-400
+  aprobada: "#38bdf8", // sky-400
+  publicada: "#10b981", // emerald-500
+  rechazada: "#f87171", // red-400
+};
+
+export const URGENCIA_GRAFICO: Record<string, string> = {
+  baja: "#94a3b8", // slate-400
+  media: "#f59e0b", // amber-500
+  alta: "#ef4444", // red-500
+  sin_dato: "#cbd5e1", // slate-300
+};
+
+export const TIPO_PUBLICACION_GRAFICO: Record<string, string> = {
+  oferta_servicio: "#10b981", // emerald-500
+  oferta_equipo: "#0ea5e9", // sky-500
+  venta_equipo: "#8b5cf6", // violet-500
+  busqueda_proveedor: "#f59e0b", // amber-500
+  busqueda_equipo: "#f43f5e", // rose-500
+};
+
+// La IA puede dejar `urgencia` en null; el RPC lo mapea a 'sin_dato'.
+export const URGENCIA_LABEL_GRAFICO: Record<string, string> = {
+  ...URGENCIA_LABEL,
+  sin_dato: "Sin clasificar",
+};
+
+// Eje X del gráfico de crecimiento: "11 jul" en vez de "11 de julio de 2026",
+// que no entra. Recibe 'YYYY-MM-DD' (fecha ya calculada en hora de Salta por el
+// RPC), así que se parsea como local para no correrse un día por UTC.
+export function formatearFechaCorta(dia: string): string {
+  const [a, m, d] = dia.split("-").map(Number);
+  if (!a || !m || !d) return dia;
+  return new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "short" })
+    .format(new Date(a, m - 1, d))
+    .replace(".", "");
+}

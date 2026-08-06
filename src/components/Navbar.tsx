@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { Building2, LogOut } from "lucide-react";
+import { BarChart3, Building2, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/auth/AuthProvider";
 
@@ -34,11 +34,22 @@ export function Navbar() {
           CAPEMISA <span className="text-muted-foreground">Conecta</span>
         </Link>
 
-        {/* Mientras la sesión se resuelve no se muestra ni "Ingresar" ni el área:
-            alternar entre los dos produce un parpadeo en cada recarga (R-03). */}
-        {!cargando && (
-          <nav className="flex items-center gap-2">
-            {session ? (
+        <nav className="flex items-center gap-1 sm:gap-2">
+          {/* El dashboard no depende de la sesión (ruta pública durante la
+              demo), así que va fuera del `!cargando`: adentro parpadearía al
+              recargar sin motivo. */}
+          <Button asChild variant="ghost" size="sm">
+            <Link to="/dashboard">
+              <BarChart3 className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Dashboard</span>
+            </Link>
+          </Button>
+
+          {/* Mientras la sesión se resuelve no se muestra ni "Ingresar" ni el
+              área: alternar entre los dos produce un parpadeo en cada recarga
+              (R-03). */}
+          {!cargando &&
+            (session ? (
               <>
                 {perfil?.empresa && (
                   <span className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground max-w-[16rem] truncate">
@@ -58,9 +69,8 @@ export function Navbar() {
               <Button asChild variant="outline" size="sm">
                 <Link to="/ingresar">Ingresar</Link>
               </Button>
-            )}
-          </nav>
-        )}
+            ))}
+        </nav>
       </div>
     </header>
   );

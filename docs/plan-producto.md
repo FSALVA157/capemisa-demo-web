@@ -35,8 +35,8 @@ opcional: es lo que hace seguro que la IA clasifique mal alguna vez.
 | Login + área de miembro (listado propio, interesados, alta y edición) | web, feature 002 | ✅ |
 | Carga conversacional + enriquecimiento IA + matching | n8n (7 workflows) | ✅ |
 | **Panel admin** — aprobar `pendiente` → `publicada` | — | ❌ sin spec |
-| **Dashboard** de indicadores | — | ❌ sin spec |
-| **Chat web embebido** (misma IA que el bot) | — | ❌ sin spec |
+| **Dashboard** de indicadores | web, feature 004 | ✅ |
+| **Chat web embebido** (misma IA que el bot) | web, feature 003 | ✅ |
 
 El panel admin es el que cierra el circuito end-to-end: hoy una publicación creada desde
 `/mi-area` queda en `pendiente` y **no hay forma en la web de aprobarla**.
@@ -50,8 +50,12 @@ cualquiera, pero explicitando el costo.
   brief. Cubren los 3 casos de prueba precargados.
 - **Estados de publicación**: 5 (`pendiente`, `faltan_datos`, `aprobada`, `publicada`,
   `rechazada`) en vez de 8.
-- **Dashboard**: 5 indicadores en vez de 11 — empresas registradas, publicaciones activas, rubros
-  más activos, oportunidades urgentes, solicitudes de contacto.
+- **Dashboard**: 5 indicadores en vez de 11. La feature 004 los ajustó a lo que los datos
+  soportan hoy: publicaciones cargadas, publicaciones en el catálogo, solicitudes de contacto,
+  porcentaje clasificado por IA, más el embudo de estados, el crecimiento acumulado, el mix por
+  tipo y urgencia, y el ranking de más consultadas. Quedaron afuera **rubros más activos** (el
+  campo `rubro` está sin normalizar: `Logistica` / `Logística` / `Transporte y Logística`) y
+  **zona** (texto libre, 19 valores distintos para 26 filas). Ver `specs/004-dashboard-metricas/spec.md`.
 - **Sin upload real de archivos** en la web: las imágenes vienen del pipeline de WhatsApp
   (Cloudinary vía n8n) o de seeds.
 - **Sin registro público**: las cuentas las carga CAPEMISA a mano.

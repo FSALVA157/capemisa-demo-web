@@ -22,10 +22,14 @@ export const URGENCIA_LABEL: Record<string, string> = {
   alta: "Alta",
 };
 
+// Los badges vienen en escala 200/900 —fondo clarísimo, texto oscurísimo—, que
+// sobre el fondo oscuro quedan como manchas fluorescentes. La variante `dark:`
+// invierte la idea: fondo translúcido del mismo tono (500/15) y texto en 300.
 export const URGENCIA_COLOR: Record<string, string> = {
-  baja: "bg-slate-200 text-slate-800 hover:bg-slate-200",
-  media: "bg-amber-200 text-amber-900 hover:bg-amber-200",
-  alta: "bg-red-200 text-red-900 hover:bg-red-200",
+  baja: "bg-slate-200 text-slate-800 hover:bg-slate-200 dark:bg-slate-400/15 dark:text-slate-300 dark:hover:bg-slate-400/15",
+  media:
+    "bg-amber-200 text-amber-900 hover:bg-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:hover:bg-amber-500/15",
+  alta: "bg-red-200 text-red-900 hover:bg-red-200 dark:bg-red-500/15 dark:text-red-300 dark:hover:bg-red-500/15",
 };
 
 // Estados del ciclo de vida de una publicación, tal como los guarda la base.
@@ -49,12 +53,18 @@ export const ESTADO_PUBLICACION_LABEL: Record<string, string> = {
   rechazada: "Rechazada",
 };
 
+// Mismo criterio que URGENCIA_COLOR para la variante oscura.
 export const ESTADO_PUBLICACION_COLOR: Record<string, string> = {
-  pendiente: "bg-amber-200 text-amber-900 hover:bg-amber-200",
-  faltan_datos: "bg-orange-200 text-orange-900 hover:bg-orange-200",
-  aprobada: "bg-sky-200 text-sky-900 hover:bg-sky-200",
-  publicada: "bg-emerald-200 text-emerald-900 hover:bg-emerald-200",
-  rechazada: "bg-red-200 text-red-900 hover:bg-red-200",
+  pendiente:
+    "bg-amber-200 text-amber-900 hover:bg-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:hover:bg-amber-500/15",
+  faltan_datos:
+    "bg-orange-200 text-orange-900 hover:bg-orange-200 dark:bg-orange-500/15 dark:text-orange-300 dark:hover:bg-orange-500/15",
+  aprobada:
+    "bg-sky-200 text-sky-900 hover:bg-sky-200 dark:bg-sky-500/15 dark:text-sky-300 dark:hover:bg-sky-500/15",
+  publicada:
+    "bg-emerald-200 text-emerald-900 hover:bg-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:hover:bg-emerald-500/15",
+  rechazada:
+    "bg-red-200 text-red-900 hover:bg-red-200 dark:bg-red-500/15 dark:text-red-300 dark:hover:bg-red-500/15",
 };
 
 export function formatearFecha(iso: string | null | undefined): string {
@@ -106,6 +116,18 @@ export const TIPO_PUBLICACION_GRAFICO: Record<string, string> = {
   venta_equipo: "#8b5cf6", // violet-500
   busqueda_proveedor: "#f59e0b", // amber-500
   busqueda_equipo: "#f43f5e", // rose-500
+};
+
+// Tema de la interfaz (feature 005). Los identificadores son los de next-themes
+// y no se traducen: viajan a localStorage y a la clase del <html>.
+export const TEMAS = ["light", "dark", "system"] as const;
+
+export type Tema = (typeof TEMAS)[number];
+
+export const TEMA_LABEL: Record<Tema, string> = {
+  light: "Claro",
+  dark: "Oscuro",
+  system: "Como el sistema",
 };
 
 // La IA puede dejar `urgencia` en null; el RPC lo mapea a 'sin_dato'.

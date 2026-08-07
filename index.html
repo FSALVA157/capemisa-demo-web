@@ -1,10 +1,33 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-AR">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>web</title>
+    <!--
+      Tema antes del primer paint (feature 005). next-themes está pensado para
+      SSR: en una SPA de Vite aplica la clase recién en su primer efecto, así
+      que recargar en oscuro muestra un destello blanco. Este script corre antes
+      del bundle y deja el <html> ya pintado. La clave tiene que ser la misma
+      `storageKey` del ThemeProvider de src/main.tsx.
+    -->
+    <script>
+      (function () {
+        try {
+          var elegido = localStorage.getItem("capemisa-tema");
+          var oscuro =
+            elegido === "dark" ||
+            ((!elegido || elegido === "system") &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var raiz = document.documentElement;
+          raiz.classList.toggle("dark", oscuro);
+          raiz.style.colorScheme = oscuro ? "dark" : "light";
+        } catch (e) {
+          /* localStorage bloqueado: queda el tema claro, que es el default. */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

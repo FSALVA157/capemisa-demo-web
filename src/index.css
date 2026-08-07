@@ -26,6 +26,40 @@
     --radius: 0.5rem;
   }
 
+  /* Tema oscuro (feature 005). Set canónico de shadcn para `baseColor: slate`,
+     el mismo que ya usa el `:root` de arriba. Va como clase y no como
+     `@media (prefers-color-scheme: dark)` porque la elección del usuario tiene
+     que poder ganarle al sistema: `tailwind.config.js` está en
+     `darkMode: ["class"]` y quien pone la clase en <html> es next-themes.
+     `--radius` no se redefine: es geometría, no color. */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    /* Único desvío del set canónico: shadcn/slate pone --destructive en
+       `0 62.8% 30.6%`, un rojo apagado pensado para usarse de fondo. Pero la
+       app lo usa sobre todo como *texto* (`text-destructive` en el Alert de
+       error de /ingresar y en los mensajes de validación de los formularios) y
+       ahí queda ilegible sobre el fondo oscuro. Rojo 600, que lee bien como
+       texto y sigue aguantando el texto blanco encima cuando es fondo. */
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
   * {
     @apply border-border;
   }

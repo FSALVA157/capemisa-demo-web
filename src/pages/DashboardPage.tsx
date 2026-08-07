@@ -43,7 +43,11 @@ import {
 // compartida que valga la pena extraer a components/.
 // ---------------------------------------------------------------------------
 
-const EJE = { fontSize: 12, fill: "hsl(215.4 16.3% 46.9%)" }; // --muted-foreground
+// El `fill` va como `var()` y no con el valor resuelto: recharts lo pasa tal
+// cual al atributo del SVG, así que el navegador lo resuelve contra el elemento
+// y los ejes siguen al tema solos. Con el HSL escrito a mano quedaban ilegibles
+// en oscuro (feature 005).
+const EJE = { fontSize: 12, fill: "hsl(var(--muted-foreground))" };
 
 function Kpi({
   icono: Icono,

@@ -63,6 +63,17 @@ Y un riesgo aceptado con criterio de demo (R-12 de `specs/003-chat-web-catalogo/
 
 **Los workflows n8n existentes no se tocan bajo ninguna condición**: están en uso para demos ante el cliente. Si hiciera falta un cambio en uno reutilizado, se crea un **gemelo** (copia con ID propio) y se consume ese. Al crear workflows por la API hay un detalle: **n8n no genera el `webhookId`** —lo hace la UI—, y sin él la ruta de producción no se registra y responde "webhook is not registered" aunque el workflow figure activo.
 
+### Tema claro/oscuro (feature 005)
+
+`ThemeProvider` de `next-themes` en `src/main.tsx`, arriba de todo: `ui/sonner.tsx` llama a `useTheme()` y sin provider por encima el toast se queda en claro. El control es `src/components/ThemeToggle.tsx`, en la Navbar y **fuera** del guard `{!cargando}` — el tema no depende de la sesión. Las variables del tema oscuro están en el bloque `.dark` de `src/index.css`, y `tailwind.config.js` ya venía en `darkMode: ["class"]`.
+
+Dos cosas que parecen de más y no lo son:
+
+- **El script inline de `index.html` duplica la `storageKey` `capemisa-tema`.** `next-themes` está pensado para SSR: en una SPA de Vite aplica la clase recién en su primer efecto, o sea después del primer pintado, y recargar en oscuro da un flash blanco. El script la deja puesta antes de que baje el bundle. Si cambia la clave, hay que cambiarla en los **dos** lugares.
+- **`--destructive` en `.dark` no es el valor canónico de shadcn/slate.** El canon (`0 62.8% 30.6%`) es un rojo apagado pensado para fondo, pero la app lo usa como *texto* (`text-destructive` en el Alert de `/ingresar` y en los mensajes de validación de los formularios) y ahí queda ilegible. Está en rojo 600.
+
+Los colores de recharts (`*_GRAFICO` en `src/lib/i18n.ts`) siguen siendo hex fijos a propósito: son escalas 400/500 y se leen en ambos temas. El que sí es reactivo es `EJE` de `DashboardPage.tsx`, con `hsl(var(--muted-foreground))` — recharts pasa el string tal cual al SVG, así que la `var()` resuelve sola. Si alguien la "resuelve" a un HSL literal, los ejes desaparecen en oscuro.
+
 ### Autenticación y área de miembro
 
 Desde la feature 002 hay login por email y contraseña (Supabase Auth, sin registro público ni recuperación de contraseña: las cuentas las carga CAPEMISA).
@@ -104,7 +115,7 @@ La [constitución](.specify/memory/constitution.md) v1.0.1 rige sobre cualquier 
 
 - **Spec-Driven Development es no negociable**: features nuevas pasan por `/speckit-specify → /speckit-plan → /speckit-tasks → /speckit-implement`. Nada de implementar sin un `tasks.md` que lo motive. Los artefactos de `specs/` son la fuente de verdad.
 - **Stack congelado**: prohibido agregar otro framework, otra librería UI (MUI, Chakra, Ant), un backend propio o un ORM.
-- **YAGNI**: preferir tres implementaciones parecidas antes que una abstracción prematura. Fuera de alcance hasta que una spec los incorpore: dark mode, i18n, PWA, offline, upload real de archivos, registro público, notificaciones push.
+- **YAGNI**: preferir tres implementaciones parecidas antes que una abstracción prematura. Fuera de alcance hasta que una spec los incorpore: i18n, PWA, offline, upload real de archivos, registro público, notificaciones push. (Dark mode salió de esta lista con la feature 005.)
 - **`service_role` nunca en el frontend**, ni comentado. El bundle es público.
 - **`db/*.sql` no se ejecuta desde código de aplicación**: las migraciones las corre el humano contra Supabase (o vía MCP con autorización explícita).
 - **Workflows n8n** se modifican por MCP (`n8n-capemisa`), no en la UI.

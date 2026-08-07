@@ -37,6 +37,7 @@ opcional: es lo que hace seguro que la IA clasifique mal alguna vez.
 | **Panel admin** — aprobar `pendiente` → `publicada` | — | ❌ sin spec |
 | **Dashboard** de indicadores | web, feature 004 | ✅ |
 | **Chat web embebido** (misma IA que el bot) | web, feature 003 | ✅ |
+| Tema claro / oscuro / sistema | web, feature 005 | ✅ |
 
 El panel admin es el que cierra el circuito end-to-end: hoy una publicación creada desde
 `/mi-area` queda en `pendiente` y **no hay forma en la web de aprobarla**.

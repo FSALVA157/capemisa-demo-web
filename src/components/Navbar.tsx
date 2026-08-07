@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { BarChart3, Building2, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/auth/AuthProvider";
 
 export function Navbar() {
@@ -27,14 +28,21 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 h-14 md:h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto max-w-7xl h-full px-4 flex items-center justify-between gap-3">
+        {/* `whitespace-nowrap` + el escalón de tamaño en mobile: con el selector
+            de tema sumando ~32 px a la barra, en 375 px la marca se partía en
+            dos líneas y desbordaba el `h-14` del header. */}
         <Link
           to="/"
-          className="text-lg md:text-xl font-semibold tracking-tight hover:opacity-80 transition"
+          className="text-base sm:text-lg md:text-xl font-semibold tracking-tight whitespace-nowrap hover:opacity-80 transition"
         >
           CAPEMISA <span className="text-muted-foreground">Conecta</span>
         </Link>
 
         <nav className="flex items-center gap-1 sm:gap-2">
+          {/* Igual que el dashboard, el tema no depende de la sesión: va fuera
+              del `!cargando`. */}
+          <ThemeToggle />
+
           {/* El dashboard no depende de la sesión (ruta pública durante la
               demo), así que va fuera del `!cargando`: adentro parpadearía al
               recargar sin motivo. */}

@@ -64,7 +64,7 @@ export function ChatWidget() {
 
       <div
         role="dialog"
-        aria-label="Asistente de búsqueda de CAPEMISA Conecta"
+        aria-label="Asistente de búsqueda de Minería Conecta"
         aria-hidden={!abierto}
         className={cn(
           "fixed z-40 flex flex-col rounded-xl border bg-card shadow-xl transition",

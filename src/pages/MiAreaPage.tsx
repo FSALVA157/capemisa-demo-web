@@ -71,7 +71,7 @@ export default function MiAreaPage() {
             </div>
             <h2 className="text-lg font-semibold">Todavía no publicaste nada</h2>
             <p className="text-sm text-muted-foreground">
-              Publicá una oferta o una búsqueda y el equipo de CAPEMISA la revisa antes de
+              Publicá una oferta o una búsqueda y el equipo de Minería Conecta la revisa antes de
               mostrarla en el catálogo.
             </p>
             <Button asChild className="mt-2">

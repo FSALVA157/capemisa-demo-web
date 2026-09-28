@@ -498,7 +498,7 @@ export default function DashboardPage() {
           Dashboard
         </h1>
         <p className="text-muted-foreground mt-1">
-          Cómo viene funcionando CAPEMISA Conecta, con los datos reales de la
+          Cómo viene funcionando Minería Conecta, con los datos reales de la
           plataforma.
         </p>
       </div>

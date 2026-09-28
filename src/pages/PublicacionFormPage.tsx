@@ -52,7 +52,7 @@ const ESTADOS_EDITABLES = ["pendiente", "faltan_datos"];
 const MOTIVO_NO_EDITABLE: Record<string, string> = {
   aprobada: "Ya fue aprobada y está por publicarse, así que no se puede seguir editando.",
   publicada: "Está publicada en el catálogo y no se puede editar desde acá.",
-  rechazada: "Fue rechazada por el equipo de CAPEMISA, así que no se puede editar.",
+  rechazada: "Fue rechazada por el equipo de Minería Conecta, así que no se puede editar.",
 };
 
 export default function PublicacionFormPage() {
@@ -137,7 +137,7 @@ export default function PublicacionFormPage() {
       // (FR-017, FR-023a). No se promete plazo tampoco.
       toast.success("Enviamos tu publicación para revisión", {
         description:
-          "El equipo de CAPEMISA la revisa antes de mostrarla en el catálogo. Vas a verla en tu área como pendiente de revisión.",
+          "El equipo de Minería Conecta la revisa antes de mostrarla en el catálogo. Vas a verla en tu área como pendiente de revisión.",
       });
       navigate("/mi-area");
     } catch (error) {
@@ -221,8 +221,8 @@ export default function PublicacionFormPage() {
       </h1>
       <p className="text-muted-foreground mb-6">
         {modoEdicion
-          ? "Corregí lo que haga falta mientras el equipo de CAPEMISA todavía no la revisó."
-          : "Contanos qué ofrecés o qué estás buscando. El equipo de CAPEMISA la revisa antes de mostrarla en el catálogo."}
+          ? "Corregí lo que haga falta mientras el equipo de Minería Conecta todavía no la revisó."
+          : "Contanos qué ofrecés o qué estás buscando. El equipo de Minería Conecta la revisa antes de mostrarla en el catálogo."}
       </p>
 
       {/* Aviso persistente además del diálogo: si el miembro lo cierra sin

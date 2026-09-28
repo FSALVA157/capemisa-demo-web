@@ -28,7 +28,7 @@ const MOTIVO_NO_EDITABLE: Record<string, string> = {
   publicada:
     "Está publicada en el catálogo y no se puede editar desde acá. Si necesitás cambiar algo, escribinos.",
   rechazada:
-    "Fue rechazada por el equipo de CAPEMISA, así que no se puede editar. Si querés, cargá una publicación nueva.",
+    "Fue rechazada por el equipo de Minería Conecta, así que no se puede editar. Si querés, cargá una publicación nueva.",
 };
 
 export default function MiPublicacionPage() {

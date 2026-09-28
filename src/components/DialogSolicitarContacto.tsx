@@ -58,7 +58,7 @@ export function DialogSolicitarContacto({ publicacionId, open, onOpenChange }: P
     try {
       await mutateAsync({ ...values, publicacion_id: publicacionId });
       toast.success(
-        "Tu solicitud fue enviada. El equipo de CAPEMISA se pondrá en contacto.",
+        "Tu solicitud fue enviada. El equipo de Minería Conecta se pondrá en contacto.",
       );
       form.reset(DEFAULT_VALUES);
       onOpenChange(false);
@@ -73,7 +73,7 @@ export function DialogSolicitarContacto({ publicacionId, open, onOpenChange }: P
         <DialogHeader>
           <DialogTitle>Solicitar contacto</DialogTitle>
           <DialogDescription>
-            Completá tus datos y el equipo de CAPEMISA te contactará para coordinar.
+            Completá tus datos y el equipo de Minería Conecta te contactará para coordinar.
           </DialogDescription>
         </DialogHeader>
 

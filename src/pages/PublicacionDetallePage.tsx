@@ -129,7 +129,7 @@ export default function PublicacionDetallePage() {
               Solicitar contacto
             </Button>
             <p className="text-xs text-muted-foreground mt-2">
-              El equipo de CAPEMISA te va a poner en contacto con la empresa.
+              El equipo de Minería Conecta te va a poner en contacto con la empresa.
             </p>
           </div>
         </div>

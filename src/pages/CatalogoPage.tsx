@@ -39,7 +39,7 @@ export default function CatalogoPage() {
           Catálogo de publicaciones
         </h1>
         <p className="text-muted-foreground mt-1">
-          Ofertas y búsquedas activas de la red CAPEMISA.
+          Ofertas y búsquedas activas de la red Minería Conecta.
         </p>
       </div>
 

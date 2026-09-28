@@ -35,7 +35,7 @@ export function Navbar() {
           to="/"
           className="text-base sm:text-lg md:text-xl font-semibold tracking-tight whitespace-nowrap hover:opacity-80 transition"
         >
-          CAPEMISA <span className="text-muted-foreground">Conecta</span>
+          Minería <span className="text-muted-foreground">Conecta</span>
         </Link>
 
         <nav className="flex items-center gap-1 sm:gap-2">
